@@ -8,8 +8,6 @@ class Tree
       tree[@node_name].each do |child, grandchildren|
         @children << Tree.new({ child => grandchildren })
       end
-    else
-      @node_name = nil
     end
   end
 
