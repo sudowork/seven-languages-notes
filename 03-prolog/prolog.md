@@ -1,10 +1,10 @@
-## Prolog
+# Prolog
 
 Prolog is a **declarative** language: a language where you don't specify the control flow, as opposed to **imperative** languages. Specifically, Prolog belongs to a subset of declarative languages call **logic** programming languages. Prolog bases its computations on programmer-provided facts and inferences; it then deduces the result.
 
 So how do you write a Prolog program? You define a set of assertions, **facts**, and Prolog will tell you if they're true. Even more powerful, is that if you leave gaps in your assertions, sprinkled with a few **rule**s, you can then **query** prolog and it will fill in the gaps for you.
 
-### Day 1: An Excellent Driver
+## Day 1: An Excellent Driver
 * Prolog is pretty simply; it's either a `yes` or a `no` (for now at least).
 * Let's state some **fact**s (alice likes chocolate, etc.):
 
@@ -123,7 +123,7 @@ So how do you write a Prolog program? You define a set of assertions, **facts**,
 * So, when should I use Prolog? Have you ever run into a situation where you have a bunch of possible choices, but you need to pick one or more combinations of values that satisfy a particular problem? Prolog takes care of the algorithmic part of it for you, you just have to put in the constraints!
 * **Unification**: Unification is performed through the `=` operator. And it can be thought of as assignment. It is enforcing that the left and right side of the `=` operator are equivalent in the solution.
 
-### Day 1: Self-Study
+## Day 1: Self-Study
 * Find:
     * Some free Prolog tutorials
         * [Prolog tutorial by J.R. Fisher](http://www.csupomona.edu/~jrfisher/www/prolog_tutorial/contents.html)

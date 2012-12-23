@@ -1,6 +1,6 @@
-## Ruby
+# Ruby
 
-### Day 1. Finding a Nanny
+## Day 1. Finding a Nanny
 
 * Functions covered: `puts`
 * Methods covered: `.class`, `to_i`, `to_a`, `to_s`
@@ -37,7 +37,7 @@
     * **Dynamically typed**: Type checking is performed at run-time
     * **Duck typed**: If it looks like a duck and quacks like a duck, it must be a duck. In other words, if an object has a particular method, it doesn't matter what type it is
 
-### Day 1. Self-Study
+## Day 1. Self-Study
 * Find
     * [The Ruby API](http://www.ruby-doc.org)
     * The free online version of _Programming Ruby: The Pragmatic Programmer's Guide_ [(link)](http://www.ruby-doc.org/docs/ProgrammingRuby/)
@@ -106,7 +106,7 @@
         end
         ```
 
-### Day 2: Floating Down from the Sky
+## Day 2: Floating Down from the Sky
 * Defining functions
 
     ```ruby
@@ -247,7 +247,7 @@
     * A **comparable** class must implement **<=>** (spaceship) operator
     * [**enumerable**](http://ruby-doc.org/core-1.9.3/Enumerable.html) include the following methods: `sort`, `any?`, `all?`, `collect` (map), `map`, `flat_map`, `select` (filter), `find`, `max`, `min`, `member?`, `inject` (reduce), `reduce`
 
-### Day-2: Self-Study
+## Day-2: Self-Study
 * Find
     * Find out how to access files with and without code blocks. What is the benefit of the code block?
 
@@ -330,7 +330,7 @@
     end
     ```
 
-### Day 3: Serious Change
+## Day 3: Serious Change
 * **Metaprogramming**: writing programs that write programs. _ActiveRecord_ is an Object Relational Model (ORM) that is commonly used in Ruby applications for writing a data abstraction layer for applications.
 * **Open classes**: Ruby classes are never closed to modification. You can always add methods to classes at any time; objects that have been instantiated before the modification can use the new methods. This combined with duck typing is very powerful, but also very dangerous.
 * `method_missing` is a debugging method that is called whenever a called method is not available. This can be used to develop a rich, reflective API. Be careful, however, because this means you can no longer debug wrong method calls. An example of such an API is shown below:
@@ -421,7 +421,7 @@
     bob.methods.include?(:speak)    # false
     ```
 
-### Day 3: Self-Study
+## Day 3: Self-Study
 
 * Modify the CSV application to support an each method to return a CsvRow object. Use `method_missing` on that CsvRow to return the value for the column for a given heading.
 
@@ -531,7 +531,7 @@
     csv.each { |row| puts row.one }  # test new each method
 ```
 
-### Wrapping Up
+## Wrapping Up
 * Strengths
     * Purely object oriented (no primitives)
     * Duck typing for increased polymorphism
