@@ -74,6 +74,7 @@ puts "Hello, world."
 #### Print your name 10 times
 ```ruby
 puts "Kevin Gao\n" * 10
+10.times { puts "Kevin Gao\n" }
 ```
 
 #### Print the string "This is sentence number 1," where the number 1 changes from 1 to 10.
