@@ -4,7 +4,7 @@
 
 * Functions covered: `puts`
 * Methods covered: `.class`, `to_i`, `to_a`, `to_s`
-* [Full table of operators](http://www.techotopia.com/index.php/Ruby_Operator_Precedence#Operator_Precedence_Table)
+* [Full table of operators][operators]
 * Comparison operators (order of precedence):
     * `( )`   Note: not really an operator, but oh well
     * `<=`, `<`, `>`, `>=`
@@ -39,9 +39,9 @@
 
 ## Day 1. Self-Study
 * Find
-    * [The Ruby API](http://www.ruby-doc.org)
-    * The free online version of [_Programming Ruby: The Pragmatic Programmer's Guide_](http://www.ruby-doc.org/docs/ProgrammingRuby/)
-    * A method that substitutes part of a string
+    * [The Ruby API][Ruby API]
+    * The free online version of [_Programming Ruby: The Pragmatic Programmer's Guide_][Programming Ruby]
+    * [A method][gsub] that substitutes part of a string
 
         ```ruby
         >> foo = 'The quick brown fox jumps over the lazy dog.'
@@ -51,8 +51,8 @@
         >> foo.gsub!(/a/i, 'the')       # Case-insensitive, replace all occurrences of "a" with "the" in-place
         ```
 
-    * [Ruby's regular expressions](http://www.ruby-doc.org/core-1.9.3/Regexp.html)
-    * [Ruby's ranges](http://www.ruby-doc.org/core-1.9.3/Range.html)
+    * [Ruby's regular expressions][Regex]
+    * [Ruby's ranges][Range]
 * Do
 
     ```ruby
@@ -125,7 +125,7 @@
     * Arrays can hold mixed types (non-homogenous); the following is valid: `[1, 'two', 3, '4']`
     * `[]` and `[]=` are just methods of the Array class; their typical usage is just syntactic sugar
     * Multidimensional arrays are just arrays of arrays
-    * `push` and `pop` exist natively in the [Array API](http://www.ruby-doc.org/core-1.9.3/Array.html)
+    * `push` and `pop` exist natively in the [Array API][Array]
 
 * Hashes (Maps)
     * `numbers = { 1 => 'one', 2 => 'two' }`
@@ -153,7 +153,7 @@
         end
         ```
 
-    * Alternatively, call a block using `call`. When we do this, the block is actually an instance of [`Proc`](http://www.ruby-doc.org/core-1.9.3/Proc.html) (short for procedure). The main difference is that a Proc can be stored.
+    * Alternatively, call a block using `call`. When we do this, the block is actually an instance of [`Proc`][Proc] (short for procedure). The main difference is that a Proc can be stored.
 
         ```ruby
         def call_block(&block)  # NOTE: block is actually an instance of Proc
@@ -245,7 +245,7 @@
 
     * **enumerable** and **comparable** are important modules/mixins.
     * A **comparable** class must implement **<=>** (spaceship) operator
-    * [**enumerable**](http://ruby-doc.org/core-1.9.3/Enumerable.html) include the following methods: `sort`, `any?`, `all?`, `collect` (map), `map`, `flat_map`, `select` (filter), `find`, `max`, `min`, `member?`, `inject` (reduce), `reduce`
+    * [**enumerable**][Enumerable] include the following methods: `sort`, `any?`, `all?`, `collect` (map), `map`, `flat_map`, `select` (filter), `find`, `max`, `min`, `member?`, `inject` (reduce), `reduce`
 
 ## Day-2: Self-Study
 * Find
@@ -536,12 +536,27 @@
     * Purely object oriented (no primitives)
     * Duck typing for increased polymorphism
     * Can be used somewhat functionally (blocks)
-    * Web development (see [Ruby on Rails](http://rubyonrails.org/))
+    * Web development (see [Ruby on Rails][RoR])
     * Good for scripting and being productive quickly
     * Prototyping
     * Lots of libraries and gems available
     * Fun?
 * Weaknesses
-    * Slow (new Ruby VMs try to solve this, see [Rubinius](http://rubini.us/))
+    * Slow (new Ruby VMs try to solve this, see [Rubinius][])
     * Stateful programming due to objects make concurrency hard to get right
     * Duck typing can be dangerous with regards to type safety, and makes it difficult for developer tools (debuggers, IDEs, etc.) to work with Ruby correctly.
+
+
+<!-- Links -->
+
+[operators]: http://www.techotopia.com/index.php/Ruby_Operator_Precedence#Operator_Precedence_Table
+[Ruby API]: http://www.ruby-doc.org
+[Programming Ruby]: http://www.ruby-doc.org/docs/ProgrammingRuby/
+[gsub]: http://www.ruby-doc.org/core-1.9.3/String.html#gsub-method
+[Regex]: http://www.ruby-doc.org/core-1.9.3/Regexp.html
+[Range]: http://www.ruby-doc.org/core-1.9.3/Range.html
+[Array]: http://www.ruby-doc.org/core-1.9.3/Array.html
+[Proc]: http://www.ruby-doc.org/core-1.9.3/Proc.html
+[Enumerable]: http://ruby-doc.org/core-1.9.3/Enumerable.html
+[RoR]: http://rubyonrails.org/
+[Rubinius]: http://rubini.us/
