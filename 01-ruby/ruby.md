@@ -40,7 +40,7 @@
 ## Day 1. Self-Study
 * Find
     * [The Ruby API](http://www.ruby-doc.org)
-    * The free online version of _Programming Ruby: The Pragmatic Programmer's Guide_ [(link)](http://www.ruby-doc.org/docs/ProgrammingRuby/)
+    * The free online version of [_Programming Ruby: The Pragmatic Programmer's Guide_](http://www.ruby-doc.org/docs/ProgrammingRuby/)
     * A method that substitutes part of a string
 
         ```ruby
