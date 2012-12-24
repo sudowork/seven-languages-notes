@@ -28,8 +28,8 @@ puts "Hello, world."
 
 #### For the string “Hello, Ruby,” find the index of the word “Ruby.”
 ```ruby
-'Hello, Ruby' =~ /Ruby/
-'Hello, Ruby'.index('Ruby')
+'Hello, Ruby' =~ /Ruby/     # Using regular expression matching
+'Hello, Ruby'.index('Ruby') # Using the index method
 ```
 
 #### Print your name 10 times
@@ -40,7 +40,11 @@ puts "Kevin Gao\n" * 10
 
 #### Print the string "This is sentence number 1," where the number 1 changes from 1 to 10.
 ```ruby
-(1..10).each do |num|
+(1..10).each do |num|                     # Using a range
+  puts "This is sentence number #{num}"
+end
+
+1.upto(10) do |num|                       # Using an enumerator
   puts "This is sentence number #{num}"
 end
 ```
