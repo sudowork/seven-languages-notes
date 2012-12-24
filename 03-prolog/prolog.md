@@ -180,3 +180,146 @@ So how do you write a Prolog program? You define a set of assertions, **facts**,
     % Bonus: Find all genres where guitar is played.
     plays(X, guitar), genre(X, Genre).
     ```
+
+## Day 2: Fifteen Minutes to Wapner
+* **Recursion**: How do we achieve recursion? We recursively include a subgoal in a rule. For example:
+
+    ```prolog
+    father(zeb, john_boy_sr).
+    father(john_boy_sr, john_boy_jr).
+    ancestor(X, Y) :- father(X, Y). % "base case"
+    ancestor(X, Y) :- father(X, Z), ancestor(Z, Y). % some links Z between X and Y
+    ```
+
+    * When we have two clauses, for the `ancestor` rule in this case, only one clause must be true for the rule to be true. Alternatively, we could have expressed this as a single clause using a logical or `;`.
+
+        ```prolog
+        ancestor(X, Y) :- father(X, Y);
+                          father(X, Z), ancestor(Z, Y).
+        ```
+
+* Alright, so let's write some queries to find out if someone is another person's ancestor. We can also figure out who all the ancestors of a person are, and who all the descendents of a person are using this single rule.
+
+    ```prolog
+    ancestor(zeb, john_boy_sr). % satisfies first clause
+    ancestor(zeb, john_boy_jr). % satisfies recursive clause
+    ancestor(zeb, Who).         % All descendents of zeb
+    ancestor(Who, john_boy_jr). % All ancestors of john_boy_jr
+    ```
+
+* Quick note about recursion. Often times, with a data structure or relationship deep enough, recursion will cause a **stack overflow**; in other words, each recursive call results in more space being used on the stack. If we can write our recursive call at the end of the sub-routine, we call this a **tail call**. When something is **tail-recursive**, it can be implemented without adding new stack frames to the stack (basically turning a recursive call into a loop). Tail call optimization is incredibly important, and we'll talk about it more later.
+* Other data types in Prolog:
+    * **Tuples**
+        * A data type consisting of multiple sub parts
+        * Can be declared in Prolog with the following syntax: `(1, 2, 3).`. Note that order matters.
+        * Let's try unification with tuples
+
+            ```prolog
+            (1, 2, 3) = (1, 2, 3).  % yes
+            (1, 2, 3) = (3, 2, 1).  % no
+            (1, 2, 3) = (A, B, C).  % A = 1, B = 2, C = 3
+            (A, 2, C) = (1, B, 3).  % A = 1, B = 2, C = 3; unification is commutative
+            (X, X, Y) = (1, 1, 2).  % X = 1, Y = 2
+            (X, X, Y) = (1, 2, 3).  % no
+            ```
+
+    * **Lists**
+        * Constructed by `[1, 2, 3]`.
+        * Works similar to tuples (all the examples above would be the same if you replaced the parentheses with square brackets).
+        * Deconstruction of a list into its head and tail can be done using the following: `[1, 2, 3] = [Head | Tail].`. In this situation, Prolog will assign `Head = 1` and `Tail = [2,3]`. Note that this unification only works if the list size is at least 1. An empty list won't unify.
+        * What if we want the third element and beyond but don't care about the first two element values. We can use the wildcard `_` for the first two elements and then grab the third value and tail. `[a, b, c, d, e, f] = [_, _, Third | Tail].`
+    * Let's write some predicates that do some math on lists! We will handle `count`ing, `sum`ming, and `average`-ing:
+
+      ```prolog
+      count(0, []). % base case
+      count(Count, [Head|Tail]) :- count(TailCount, Tail), Count is TailCount + 1. % we recursively call count on the tail of the list, and add 1 each time
+
+      sum(0, []).   % base case
+      sum(Sum, [Head|Tail]) :- sum(TailSum, Tail), Sum is TailSum + Head. % we use the same method here
+
+      % Let's include product for fun
+      product(1, []).
+      product(Product, [Head|Tail]) :- product(TailProd, Tail), Product is TailProd * Head.
+
+      average(Average, List) :- sum(Sum, List), count(Count, List), Average is Sum / Count. % we take the sum and count and then take the average
+      ```
+
+    * Just for kicks, can we make `count` tail-recursive?
+
+      ```prolog
+      count(Count, List) :- count(Count, List, 0).  % Alias count/2 to count/3
+      count(Count, [], A) :- Count is A.  % A is an accumulator
+      count(Count, [H|T], A) :- count(Count, T, A + 1). % Increment the parameter A with every sub-call
+      ```
+
+    * Let's talk about `append/3`. It's a rule that takes in three lists, let's call them `A`, `B`, and `C`. `append` will yield `yes` if `A + B = C`. So now what can we do with this rule?
+        * Build lists: `append([a, b, c], [1, 2, 3], C). % C = [a, b, c, 1, 2, 3]`
+        * Subtract lists: `append([a, b], What, [a, b, c]). % What = [c]` (Note that order matters)
+        * Permute lists: `append(A, B, [a, b, c]).`
+
+    * Reimplementing `append/3` as `concat/3`:
+
+## Day 2: Self-Study
+* Find:
+    * ~~Some implementations of a Fibonacci series and factorials.~~ Write an implementation of Fibonacci series and factorials.
+
+        ```prolog
+        % Fibonacci by definition (positives only)
+        fib(0, 0).
+        fib(1, 1).
+        fib(F, N) :-
+          N1 is N - 1,  % Alternatively, we could use succ(N1, N)
+          N2 is N - 2,  % similarly succ(N2, N1); succ(A, B) means B = A + 1
+          fib(F1, N1),
+          fib(F2, N2),
+          F is F1 + F2. % Alternatively plus(F1,F2,F)
+        % Support negatives by adding following rule, and call it fib2
+        % Remember: F(-n) = (-1)^(n+1) * F(n)
+        fib2(F, N) :-
+          AN is abs(N),                 % Find AN = abs(N)
+          fib(PF, AN),                  % calculate F(abs(n)) as PF
+          F is PF * (sign(N) ** (N+1)). % Use sign predicate to determine 1 or -1 from N
+                                        %  and then raise to (N+1)
+
+        % Factorial
+        factorial(1, 0).  % 0! = 1
+        factorial(F, N) :-
+          succ(N1, N),
+          factorial(F1, N1),
+          F is F1 * N.
+        ```
+    * A real-world community using Prolog. What problems are they solving with it today?
+* Do:
+
+    ```prolog
+    % Reverse the elements of a list; note that reverse/2 is already taken
+    revl([X], [X]).
+    revl(R, [H|T]) :- revl(RT, T), append(RT, [H], R).
+
+    % Find the smallest element of a list, tail-recursive; note that min_list/2 is already taken
+    min(Min, X, Y) :- % finds the min of two values
+      X < Y, Min is X;
+      X >= Y, Min is Y.
+    % Beware that min_list exists already
+    minl(Min, [H|T]) :- minl(Min, T, H). % default min is head
+    minl(Min, [], Min). % Base case is empty list, return calculated min
+    minl(Min, [H|T], X) :- min(CurrMin, H, X), minl(Min, T, CurrMin).
+
+    % Sort the emelents of a list.
+    % Let's use selection sort since we've already built minl
+    takeout(RetList, X, List) :- list(List), takeout(RetList, X, List, []).
+    takeout(RetList, H, [H|T], Past) :- append(Past, T, RetList).
+    takeout(RetList, X, [H|T], Past) :-
+      append(Past, [H], P),
+      takeout(RetList, X, T, P).
+
+    sortl(Sorted, List) :- list(List), sortl(Sorted, List, []).
+    sortl(Sorted, [], Sorted).
+    sortl(Sorted, List, Partial) :-
+      minl(Min, List),
+      takeout(Rest, Min, List),
+      append(Partial, [Min], NewList),
+      sortl(Sorted, Rest, NewList).
+
+    % sortl is O(n^2); it is also stable
+    ```
