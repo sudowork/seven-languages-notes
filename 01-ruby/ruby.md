@@ -31,11 +31,11 @@
         ```
 
 * Ruby is ...
-    * **Interpreted**: No compilation necessary
-    * **Object-oriented**: Everything is an object
-    * **Strongly typed**: Types must be compatible or _coercible_
-    * **Dynamically typed**: Type checking is performed at run-time
-    * **Duck typed**: If it looks like a duck and quacks like a duck, it must be a duck. In other words, if an object has a particular method, it doesn't matter what type it is
+    * **[Interpreted][]**: No compilation necessary, code is executed by an interpreter
+    * **[Object-oriented][]**: Everything is an object
+    * **[Strongly typed][]**: Types must be compatible or _coercible_
+    * **[Dynamically typed][]**: Type checking is performed at run-time
+    * **[Duck typed][]**: If it looks like a duck and quacks like a duck, it must be a duck. In other words, if an object has a particular method, it doesn't matter what type it is
 
 ## Day 1. Self-Study
 
@@ -564,6 +564,11 @@ end
 <!-- Links -->
 
 [operators]: http://www.techotopia.com/index.php/Ruby_Operator_Precedence#Operator_Precedence_Table
+[Interpreted]: http://en.wikipedia.org/wiki/Interpreted_language
+[Object-oriented]: http://en.wikipedia.org/wiki/Object-oriented_programming
+[Strongly typed]: http://en.wikipedia.org/wiki/Strong_typing
+[Dynamically typed]: http://en.wikipedia.org/wiki/Type_system#Dynamic_typing
+[Duck typed]: http://en.wikipedia.org/wiki/Duck_typing
 [Ruby API]: http://www.ruby-doc.org
 [Programming Ruby]: http://www.ruby-doc.org/docs/ProgrammingRuby/
 [gsub]: http://www.ruby-doc.org/core-1.9.3/String.html#gsub-method
