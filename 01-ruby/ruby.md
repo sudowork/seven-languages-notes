@@ -10,12 +10,10 @@
     * `<=`, `<`, `>`, `>=`
     * `<=>`, `==`, `===`, `!=`, `=~`, `!~`
 * Logical Operators
-    * `&&`
-    * `||`
-    * `not`
-    * `or`, `and`
-* Expression modifiers
-    * `if`, `unless`, `while`, `until`
+    * Short circuit: `&&`, `and` Whole expression: `&`
+    * Short circuit: `||`, `or` Whole expression: `|`
+    * `not`, `!`
+    * **INSERT CODE EXAMPLE/DEMO**
 * Tricky precedence nuance
     * Don't use `or`, `and`, or `not` when dealing with assignment, and don't mix `&&` and `||` with `and` and `or`.
     * Why? `and`, `or`, and `not` are lower precedence than assignment.
@@ -29,6 +27,10 @@
         => false
         # When to use them?
         ```
+* Expression modifiers
+    * `if`, `unless`, `while`, `until`
+* Falsy Values
+    * everything but `nil` and `false` evaluate to true. `0` is true!
 
 * Ruby is ...
     * **[Interpreted][]**: No compilation necessary, code is executed by an interpreter
