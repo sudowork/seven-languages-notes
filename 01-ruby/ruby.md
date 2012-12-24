@@ -294,11 +294,6 @@
 [Strongly typed]: http://en.wikipedia.org/wiki/Strong_typing
 [Dynamically typed]: http://en.wikipedia.org/wiki/Type_system#Dynamic_typing
 [Duck typed]: http://en.wikipedia.org/wiki/Duck_typing
-[Ruby API]: http://www.ruby-doc.org
-[Programming Ruby]: http://www.ruby-doc.org/docs/ProgrammingRuby/
-[gsub]: http://www.ruby-doc.org/core-1.9.3/String.html#gsub-method
-[Regex]: http://www.ruby-doc.org/core-1.9.3/Regexp.html
-[Range]: http://www.ruby-doc.org/core-1.9.3/Range.html
 [Array]: http://www.ruby-doc.org/core-1.9.3/Array.html
 [Proc]: http://www.ruby-doc.org/core-1.9.3/Proc.html
 [Enumerable]: http://ruby-doc.org/core-1.9.3/Enumerable.html
