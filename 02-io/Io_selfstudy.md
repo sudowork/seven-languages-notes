@@ -63,7 +63,7 @@ If declared on an object, then`object slotName(params)`
 
 ---
 
-## Day 2: 
+## Day 2: The Sausage King
 
 ### Do
 
@@ -228,3 +228,101 @@ If declared on an object, then`object slotName(params)`
 
     writeln("The number is ", random)
     ```
+
+---
+
+## Day 3: The Parade and Other Strange Places
+
+### Do
+
+**Enhance the XML program to add spaces to show the indentation structure.**
+**Enhance the XML program to handle attributes: if the first argument is a map (use the curly brackets syntax), add attributes to the XML program. For example: `book({"author": "Tate"}...)` would print `<book author="Tate">`**
+
+```Io
+OperatorTable addAssignOperator(":", "atPutNumber")
+curlyBrackets := method(
+  r := Map clone
+  call message arguments foreach(arg,
+    r doMessage(arg)
+  )
+  r
+)
+
+Map atPutNumber := method(
+  self atPut(
+    call evalArgAt(0) asMutable removePrefix("\"") removeSuffix("\""),
+    call evalArgAt(1)
+  )
+)
+
+Builder := Object clone
+
+indentation := "\t"
+Builder prefix := "" asMutable
+Builder indent := method(
+  self prefix appendSeq(indentation)
+)
+Builder unindent := method(
+  self prefix removeSuffix(indentation)
+)
+Builder writeIndent := method(
+  write(self prefix)
+)
+Builder writeln := method(
+  args := call message argsEvaluatedIn(call sender)
+  writeln(self prefix, args join(""))
+)
+
+Builder forward := method(
+  args := call message arguments
+  if (args first and args first name == "curlyBrackets") then(
+    m := doString(args first asString)
+    self writeIndent
+    write("<", call message name);
+    m foreach(key, value,
+      write(" ",key, "=\"", value, "\"")
+    )
+    writeln(">");
+    args = args rest
+  ) else (
+    self writeln("<", call message name, ">");
+  )
+  self indent
+  args foreach(arg,
+    content := self doMessage(arg);
+    if(content type == "Sequence", self writeln(content))
+  );
+  self unindent
+  self writeln("</", call message name, ">")
+)
+
+Builder div(
+  {
+    "class": "container",
+    "id": "top_container"
+  },
+  h3({ "class": "header" },"Io is awesome"),
+  div(
+    h5("Prototype Languages"),
+    ul(
+      { "class": "list" },
+      li("Io"),
+      li("Lua"),
+      li("JavaScript")
+    )
+  )
+)
+```
+
+**Create a list syntax that uses brackets.**
+
+```Io
+squareBrackets := method(
+  list() appendSeq(call message arguments)
+)
+
+s := File with("list.txt") openForReading contents
+l := doString(s)
+l println
+l size println
+```

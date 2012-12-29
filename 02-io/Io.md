@@ -91,11 +91,14 @@ Or
 `if(condition) then(messages) else (messages)`
 
 ```Io
-Io> if(true, "It is true.", "It is false.")
+
+if(true, "It is true.", "It is false.")
 ==> It is true.
-Io> if(false) then("It is true") else("It is false")
+
+if(false) then("It is true") else("It is false")
 ==> nil
-Io> if(false) then("It is true." println) else("It is false." println) It is false.
+
+if(false) then("It is true." println) else("It is false." println) It is false.
 ==> nil
 ```
 
@@ -171,3 +174,175 @@ type
 ## Day 3: The Parade and Other Strange Places
 
 ### Domain-Specific Languages
+
+```Io
+OperatorTable addAssignOperator(":", "atPutNumber")
+curlyBrackets := method(
+  r := Map clone
+  call message arguments foreach(arg,
+       r doMessage(arg)
+       )
+  r
+)
+
+Map atPutNumber := method(
+  self atPut(
+       call evalArgAt(0) asMutable removePrefix("\"") removeSuffix("\""),
+       call evalArgAt(1))
+)
+
+s := File with("phonebook.txt") openForReading contents
+phoneNumbers := doString(s)
+phoneNumbers keys   println
+phoneNumbers values println
+```
+
+### Io's method_missing
+
+```Io
+Builder := Object clone
+Builder forward := method(
+  writeln("<", call message name, ">");
+  call message arguments foreach(arg, 
+    content := self doMessage(arg); 
+    if(content type == "Sequence", writeln(content))
+  );
+  writeln("</", call message name, ">")
+)
+Builder ul(
+  li("Io"),
+  li("Lua"),
+  li("JavaScript")
+)
+```
+
+Output:
+
+```HTML
+<ul>
+<li>
+Io
+</li>
+<li>
+Lua
+</li>
+<li>
+JavaScript
+</li>
+</ul>
+```
+
+HTML Output:
+
+<ul>
+<li>
+Io
+</li>
+<li>
+Lua
+</li>
+<li>
+JavaScript
+</li>
+</ul>
+
+### Concurrency
+
+#### Coroutines
+
+A coroutine provides a way for a process to voluntarily suspend (using `yield`) suspend execution and transfer to another process, and then resume execution when other processes `yield`. This is very different from languages like Java or C, which uses *preemptive concurrency*
+
+Fire a message asynchronously:
+
+* `@message` => future
+* `@@message` => nil and starts the message in its own thread
+
+Coroutines are great for **cooperative multitasking**
+
+```Io
+vizzini := Object clone
+vizzini talk := method(
+            "Fezzik, are there rocks ahead?" println
+            yield 
+            "No more rhymes now, I mean it." println
+             yield)
+
+fezzik := Object clone
+
+fezzik rhyme := method(
+      yield
+            "If there are, we'll all be dead." println
+            yield 
+            "Anybody want a peanut?" println)
+
+vizzini @@talk; fezzik @@rhyme
+
+Coroutine currentCoroutine pause # wait until all async messages complete and then exits.
+```
+
+Output:
+
+```
+Fezzik, are there rocks ahead?
+If there are, we'll all be dead.
+No more rhymes now, I mean it.
+Anybody want a peanut?
+Scheduler: nothing left to resume so we are exiting
+```
+
+#### Actors
+
+Actors as universal concurrent primitives that can send messages, process messages, and create other actors. The messages an actor receives are concurrent. In Io, an actor places an incoming message on a queue and processes the contents of the queue with [coroutines][].
+
+Actors have a huge theoretical advantage over threads. An actor changes its own state and accesses other actors only through closely controlled queues. Threads can change each other’s state without restriction. Threads are subject to a concurrency problem called *race conditions*, where two threads access resources at the same time, leading to unpredictable results.
+
+```Io
+slower := Object clone
+faster := Object clone 
+slower start := method(wait(2); writeln("slowly"))
+faster start := method(wait(1); writeln("quickly"))
+
+> slower start; faster start # sequential
+slowly
+quickly
+==> nil 
+> slower @@start; faster @@start; wait(3) # parallel in each thread
+quickly
+slowly
+```
+
+Make objects actors by simply sending an asynchronous message to them. Each thread can only alter its own state
+
+#### Futures
+
+A future is a result object that is immediately returned from an asynchronous message call. Since the message may take a while to process, the future becomes the result once the result is available. If you ask for the value of a future before the result is available, the process blocks until the value is available. The value is a `Future` object until the result arrives, and then all instances of the value point to the result object.
+
+`Futures` in Io also provide automatic deadlock detection.
+
+```Io
+futureResult := URL with("http://google.com/") @fetch
+writeln("Do something immediately while fetch goes on in background...")
+# blocks until future returns
+writeln("fetched ", futureResult size, " bytes") 
+```
+
+Output:
+
+```
+Do something immediately while fetch goes on in background...
+fetched 4894 bytes
+```
+
+## Wrapping Up
+
+### Strengths
+* Malleable, allow for creation of custom syntax
+* Small Footprint
+* Compact, simple, easy to learn syntax
+* Duck typing and freedom allow for basic rules of the language to be tweaked or changed to suit your needs. Easy to add proxies by overriding the `forward` slot
+* Concurrency constructs make it easier to build and test performant multi-threaded applications
+
+### Weaknesses
+* Small community
+* Little syntactical sugar
+* Some features will slow raw, single threaded performance
