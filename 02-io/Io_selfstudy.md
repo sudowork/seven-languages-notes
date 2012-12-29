@@ -11,7 +11,7 @@
 * An Io community that will answer questions
   [Yahoo Group](http://tech.groups.yahoo.com/group/iolanguage/messages)
   [Stackoverflow](http://stackoverflow.com/questions/tagged/iolanguage)
-  #io on freenode
+  \#io on freenode
   [Sub Reddit](http://www.reddit.com/r/iolanguage)
 
 * A style guide with Io idioms
@@ -25,7 +25,7 @@
 1+1
 ==> 2
 1+"one"
-Exception: argument 0 to method '+' must be a Number, not a 'Sequence'
+==> "Exception: argument 0 to method '+' must be a Number, not a 'Sequence'""
 ```
 
 Strongly typed
@@ -44,6 +44,7 @@ Strongly typed
 ```
 
 **How can you tell what slots a prototype supports?**
+
 `prototype slotNames` or `prototype slotSummary`
 
 **What is the difference between `=` (equals), `:=` (colon equals), and `::=` (colon colon equals)? When would you use each one?**
@@ -55,9 +56,11 @@ Strongly typed
 ### Do
 
 **Run an Io program from a file.**
+
 `io animal.io`
 
 **Execute the code in a slot given its name.**
+
 If declared in `Lobby`, then `slotName(params)`
 If declared on an object, then`object slotName(params)`
 
