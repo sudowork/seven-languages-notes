@@ -74,7 +74,7 @@ If declared on an object, then`object slotName(params)`
 
     ```Io
     # Head recursion
-    fib := method(n, if(n <= 2, 1, fib(n - 1), fib(n - 2)))
+    fib := method(n, if(n <= 2, 1, fib(n - 1) + fib(n - 2)))
     # Tail recursion
     fibTail := method(n, a, b, if(n <= 2, b, fibTail(n - 1, b, a + b)))
     # Loop
