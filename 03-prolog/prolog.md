@@ -132,8 +132,7 @@ Tennessee = blue ? a
 
 
 So, when should I use Prolog? Have you ever run into a situation where you have a bunch of possible choices, but you need to pick one or more combinations of values that satisfy a particular problem? Prolog takes care of the algorithmic part of it for you, you just have to put in the constraints!
-
-**Unification**: Unification is performed through the `=` operator. And it can be thought of as assignment. It is enforcing that the left and right side of the `=` operator are equivalent in the solution.
+**<a href="#unification">Unification</a>**: Unification is performed through the `=` operator. And it can be thought of as assignment. It is enforcing that the left and right side of the `=` operator are equivalent in the solution.
 
 ---
 
@@ -223,3 +222,145 @@ Reimplementing `append/3` as `concat/3`:
 concatenate([], List, List).
 concatenate([Head|Tail1], List, [Head|Tail2]) :- concatenate(Tail1, List, Tail2).
 ```
+
+---
+
+## Day 3: Blowing Up Vegas
+
+### Sudoku
+`fd_domain(List, LowerBound, UpperBound)`: this predicate is true if all the values in `List` are between `LowerBound` and `UpperBound`, inclusive.
+
+`fd_all_different(List)`: this predicate is true if all values in `List` are all different
+
+```prolog
+valid([]).
+valid([Head|Tail]) :-
+  fd_all_different(Head),
+  valid(Tail).
+
+sudoku(Puzzle, Solution) :-
+  Solution = Puzzle,
+  Puzzle = [
+    S11, S12, S13, S14,
+    S21, S22, S23, S24,
+    S31, S32, S33, S34,
+    S41, S42, S43, S44
+  ],
+  fd_domain(Solution, 1, 4),
+  Row1 = [S11, S12, S13, S14],
+  Row2 = [S21, S22, S23, S24],
+  Row3 = [S31, S32, S33, S34],
+  Row4 = [S41, S42, S43, S44],
+  Col1 = [S11, S21, S31, S41],
+  Col2 = [S12, S22, S32, S42],
+  Col3 = [S13, S23, S33, S43],
+  Col4 = [S14, S24, S34, S44],
+  Square1 = [S11, S12, S21, S22],
+  Square2 = [S13, S14, S23, S24],
+  Square3 = [S31, S32, S41, S42],
+  Square4 = [S33, S34, S43, S44],
+  valid([
+    Row1, Row2, Row3, Row4,
+    Col1, Col2, Col3, Col4,
+    Square1, Square2, Square3, Square4
+  ]).
+```
+
+### Eight Queens
+`length(List, N)` succeeds if `List` has `N` elements
+
+`member(M, List)` succeeds if `M` is a member of `List`
+
+\* Alternatively, you can do `fd_domain(M, 1, 8)` in this case
+
+Diagonals
+
+```prolog
+diags1([], []).
+diags1([(Row, Col)|QueensTail], [Diagonal|DiagonalsTail]) :-
+  Diagonal is Col - Row,
+  diags1(QueensTail, DiagonalsTail).
+
+diags2([], []).
+diags2([(Row, Col)|QueensTail], [Diagonal|DiagonalsTail]) :-
+  Diagonal is Col + Row,
+  diags2(QueensTail, DiagonalsTail).
+```
+
+|       |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |
+| :---: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| **1** | 11  | 12  | 13  | 14  | 15  | 16  | 17  | 18  |
+| **2** | 22  | 22  | 23  | 24  | 25  | 26  | 27  | 28  |
+| **3** | 33  | 32  | 33  | 34  | 35  | 36  | 37  | 38  |
+| **4** | 44  | 42  | 43  | 44  | 45  | 46  | 47  | 48  |
+| **5** | 55  | 52  | 53  | 54  | 55  | 56  | 57  | 58  |
+| **6** | 66  | 62  | 63  | 64  | 65  | 66  | 67  | 68  |
+| **7** | 77  | 72  | 73  | 74  | 75  | 76  | 77  | 78  |
+| **8** | 88  | 82  | 83  | 84  | 85  | 86  | 87  | 88  |
+
+|                         **Diag1**             |||||||||
+|       |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |
+| :---: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| **1** | 1+1 | 1+2 | 1+3 | 1+4 | 1+5 | 1+6 | 1+7 | 1+8 |
+| **2** | 2+1 | 2+2 | 2+3 | 2+4 | 2+5 | 2+6 | 2+7 | 2+8 |
+| **3** | 3+1 | 3+2 | 3+3 | 3+4 | 3+5 | 3+6 | 3+7 | 3+8 |
+| **4** | 4+1 | 4+2 | 4+3 | 4+4 | 4+5 | 4+6 | 4+7 | 4+8 |
+| **5** | 5+1 | 5+2 | 5+3 | 5+4 | 5+5 | 5+6 | 5+7 | 5+8 |
+| **6** | 6+1 | 6+2 | 6+3 | 6+4 | 6+5 | 6+6 | 6+7 | 6+8 |
+| **7** | 7+1 | 7+2 | 7+3 | 7+4 | 7+5 | 7+6 | 7+7 | 7+8 |
+| **8** | 8+1 | 8+2 | 8+3 | 8+4 | 8+5 | 8+6 | 8+7 | 8+8 |
+
+|                         **Diag1**             |||||||||
+|       |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |
+| :---: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| **1** |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |
+| **2** |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10 |
+| **3** |  4  |  5  |  6  |  7  |  8  |  9  |  10 |  11 |
+| **4** |  5  |  6  |  7  |  8  |  9  |  10 |  11 |  12 |
+| **5** |  6  |  7  |  8  |  9  |  10 |  11 |  12 |  13 |
+| **6** |  7  |  8  |  9  |  10 |  11 |  12 |  13 |  14 |
+| **7** |  8  |  9  |  10 |  11 |  12 |  13 |  14 |  15 |
+| **8** |  9  |  10 |  11 |  12 |  13 |  14 |  15 |  16 |
+
+|                         **Diag2**             |||||||||
+|       |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |
+| :---: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| **1** | 1-1 | 2-1 | 3-1 | 4-1 | 5-1 | 6-1 | 7-1 | 8-1 |
+| **2** | 1-2 | 2-2 | 3-2 | 4-2 | 5-2 | 6-2 | 7-2 | 8-2 |
+| **3** | 1-3 | 2-3 | 3-3 | 4-3 | 5-3 | 6-3 | 7-3 | 8-3 |
+| **4** | 1-4 | 2-4 | 3-4 | 4-4 | 5-4 | 6-4 | 7-4 | 8-4 |
+| **5** | 1-5 | 2-5 | 3-5 | 4-5 | 5-5 | 6-5 | 7-5 | 8-5 |
+| **6** | 1-6 | 2-6 | 3-6 | 4-6 | 5-6 | 6-6 | 7-6 | 8-6 |
+| **7** | 1-7 | 2-7 | 3-7 | 4-7 | 5-7 | 6-7 | 7-7 | 8-7 |
+| **8** | 1-8 | 2-8 | 3-8 | 4-8 | 5-8 | 6-8 | 7-8 | 8-8 |
+
+|                         **Diag2**             |||||||||
+|       |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |
+| :---: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| **1** |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |
+| **2** |  -1 |  0  |  1  |  2  |  3  |  4  |  5  |  6  |
+| **3** |  -2 |  -1 |  0  |  1  |  2  |  3  |  4  |  5  |
+| **4** |  -3 |  -2 |  -1 |  0  |  1  |  2  |  3  |  4  |
+| **5** |  -4 |  -3 |  -2 |  -1 |  0  |  1  |  2  |  3  |
+| **6** |  -5 |  -4 |  -3 |  -2 |  -1 |  0  |  1  |  2  |
+| **7** |  -6 |  -5 |  -4 |  -3 |  -2 |  -1 |  0  |  1  |
+| **8** |  -7 |  -6 |  -5 |  -4 |  -3 |  -2 |  -1 |  0  |
+
+## Wrapping Up
+
+Prolog works with knowledge bases, composed of logical facts and inferences about various problem domains. Queries can be made on the knowledge bases assertions, which will be resolved through [unification][] that makes variables on both sides of a system match
+
+### Strengths
+
+Applicable for a variety of problems:
+
+* Natural-Language Processing - understand inexact language
+* Games - more complex and adaptable characters and environment
+* Semantic Web - rich user experience
+* Artificial Intelligence - model formal logic
+* Scheduling - excel in working with constrained resources
+
+### Weaknesses
+
+* Focused on niche, logic proramming instead of general-purpose use, and therefore has some limitations related to language design
+* Uses a depth-first search of a decision tree, using all possible combinations matched against the set of rules. Large data sets can be particularly computationally intensive

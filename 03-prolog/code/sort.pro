@@ -1,9 +1,11 @@
 %% Sort the elements of a list.
 
-%% Include small.pl
+%% Include small
 %% ['small'].
-%% Include sort.pl
-%% ['sort'].
+
+without([], _, []).
+without([H|T], H, T).
+without([H|T], Item, [H|T2]) :- \+(H = Item), without(T, Item, T2).
 
 %% Doesn't yet support duplicates
 sortList([H], [H]).
