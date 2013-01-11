@@ -26,35 +26,51 @@ BOLD="\033[1m"
 
 # Installation
 
-echo "Please install GCC and other build tools using the following link"
-open https://github.com/kennethreitz/osx-gcc-installer#option-1-downloading-pre-built-binaries
-
-echo -e "Press enter to continue ${GREEN}after installing GCC"
-read
+# Check gcc
+command -v gcc >/dev/null 2>&1 || {
+  echo "GCC not found. Please install GCC for your version of Mac OS X using the following link" >&2
+  open https://github.com/kennethreitz/osx-gcc-installer#option-1-downloading-pre-built-binaries
+  exit 1;
+}
 
 echo "Installing Homebrew (http://mxcl.github.com/homebrew/)"
-# ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+
+# sudo mkdir /usr/local/Cellar
+# sudo chown -R `whoami` /usr/local
+
+brew docter
+
+echo "If you get \"${BOLD}Your system is raring to brew${RESET}\", Press enter to continue"
+echo "Otherwise, please go to ${BOLD}http://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/$RESET, scroll to ${BOLD}Step 3: Install Homebrew"
+
+pause
+
+brew update
 
 echo "Installing Ruby..."
-# brew install ruby
+brew install rbenv
+brew install ruby-build
+rbenv install 1.9.3-p194
+rbenv global 1.9.3-p125
 
 echo "Installing Io..."
-# brew install io
+brew install io
 
 echo "Installing Prolog..."
-# brew install gprolog
+brew install gprolog
 
 echo "Installing Scala..."
-# brew install scala
+brew install scala
 
 echo "Installing Erlang..."
-# brew install erlang
+brew install erlang
 
 echo "Installing Clojure..."
-# brew install clojure
+brew install clojure
 
 echo "Installing Haskell..."
-# brew install ghc
-# brew install haskell-platform
+brew install ghc
+brew install haskell-platform
 
 echo "You are all Done"
